@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <UserSecretsId>aspnet-demoapi-F1F9E2DF-3CAE-4225-95F1-A39803B36046</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.AzureADB2C.UI" Version="3.0.0" />
+  </ItemGroup>
+
+</Project>

@@ -12,7 +12,7 @@ export const authConfig: AuthConfig = {
   tokenEndpoint: 'https://azuregeek.b2clogin.com/azuregeek.onmicrosoft.com/oauth2/v2.0/token?p=b2c_1_susi',
   loginUrl: 'https://azuregeek.b2clogin.com/azuregeek.onmicrosoft.com/oauth2/v2.0/token?p=b2c_1_susi',
   clientId: '447115e9-7562-4755-bd5b-5badb1b2230e',
-  scope: 'openid profile https://azuregeek.onmicrosoft.com/foo-api/user_impersonation',
+  scope: 'openid profile https://azuregeek.onmicrosoft.com/demoapi/user_impersonation',
   skipIssuerCheck: true,
   clearHashAfterLogin: true,
   oidc: true,
