@@ -26,11 +26,22 @@ import { authConfig, DiscoveryDocumentConfig } from './auth.config';
   </div>
   
   <div *ngIf="claims">
+    <button (click)="refreshToken()">Refresh</button>
     <button (click)="logout()">Logout</button>
     <button (click)="getMessage()">API Call</button>
     <div *ngIf="message">
       Response:
       {{message | json}}
+    </div>
+    <div *ngIf="accessTokenExpirationDate">
+      Token expires at {{accessTokenExpirationDate.toLocaleString()}}
+      <br />
+      Refreshed:
+      <ul>
+        <li *ngFor="let refreshTime of refreshTimes">
+          {{refreshTime}}
+        </li>
+      </ul>
     </div>
   </div>
   `,
@@ -43,6 +54,7 @@ export class AppComponent {
   }
 
   message: string;
+  refreshTimes: Array<string> = [];
 
   public getMessage() {
     this.http.get("https://localhost:5001/api/values", { responseType: 'text' })
@@ -60,16 +72,30 @@ export class AppComponent {
     this.oauthService.logOut();
   }
 
+  public refreshToken() {
+    this.oauthService.silentRefresh()
+      .then(info => { 
+        console.debug('refresh ok', info) 
+        this.refreshTimes.push(new Date(Date.now()).toLocaleString())})
+      .catch(err => console.error('refresh error', err));
+  }
+
   public get claims() {
     let claims = this.oauthService.getIdentityClaims();
     return claims;
 
   }
 
+  public get accessTokenExpirationDate() {
+    let accessTokenExpirationDate = new Date(this.oauthService.getAccessTokenExpiration());
+    return accessTokenExpirationDate;
+  }
+
   private configure() {
     this.oauthService.configure(authConfig);
     this.oauthService.tokenValidationHandler = new NullValidationHandler();
     this.oauthService.loadDiscoveryDocument(DiscoveryDocumentConfig.url);
+    this.oauthService.setupAutomaticSilentRefresh();
   }
 
 }
