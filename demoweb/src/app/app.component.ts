@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { OAuthService, NullValidationHandler } from 'angular-oauth2-oidc';
-import { authConfig, DiscoveryDocumentConfig } from './auth.config';
+import { OAuthService, NullValidationHandler, JwksValidationHandler } from 'angular-oauth2-oidc';
+import { authConfig, DiscoveryDocumentConfig, authConfigPkce } from './auth.config';
 
 @Component({
   selector: 'app-root',
@@ -49,8 +49,9 @@ import { authConfig, DiscoveryDocumentConfig } from './auth.config';
 })
 export class AppComponent {
   constructor(private http: HttpClient, private oauthService: OAuthService) {
-    this.configure();
-    this.oauthService.tryLoginImplicitFlow();
+    //this.configure();
+    //this.oauthService.tryLoginImplicitFlow();
+    this.configurePkce();
   }
 
   message: string;
@@ -65,7 +66,8 @@ export class AppComponent {
   }
 
   public login() {
-    this.oauthService.initLoginFlow();
+    //this.oauthService.initLoginFlow();
+    this.oauthService.initCodeFlow();
   }
 
   public logout() {
@@ -73,11 +75,16 @@ export class AppComponent {
   }
 
   public refreshToken() {
+    if (!this.oauthService.hasValidAccessToken()) {
     this.oauthService.silentRefresh()
       .then(info => { 
         console.debug('refresh ok', info) 
         this.refreshTimes.push(new Date(Date.now()).toLocaleString())})
       .catch(err => console.error('refresh error', err));
+    }
+    else {
+      console.log("Token is still valid")
+    };
   }
 
   public get claims() {
@@ -96,6 +103,14 @@ export class AppComponent {
     this.oauthService.tokenValidationHandler = new NullValidationHandler();
     this.oauthService.loadDiscoveryDocument(DiscoveryDocumentConfig.url);
     this.oauthService.setupAutomaticSilentRefresh();
+  }
+
+  private configurePkce() {
+    this.oauthService.configure(authConfigPkce);
+    this.oauthService.setupAutomaticSilentRefresh();
+    this.oauthService.loadDiscoveryDocument("https://azuregeek.b2clogin.com/7b918f59-f55d-4d3e-8f45-58502a7684f7/b2c_1_susi/v2.0/.well-known/openid-configuration");
+    this.oauthService.tryLogin();
+    
   }
 
 }
