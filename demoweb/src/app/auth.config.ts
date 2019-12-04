@@ -22,9 +22,12 @@ export const authConfig: AuthConfig = {
 
 export const authConfigPkce: AuthConfig = {
   issuer: 'https://azuregeek.b2clogin.com/7b918f59-f55d-4d3e-8f45-58502a7684f7/v2.0/',
+  tokenEndpoint: 'https://azuregeek.b2clogin.com/7b918f59-f55d-4d3e-8f45-58502a7684f7/b2c_1_susi/oauth2/v2.0/authorize',
   redirectUri: window.location.origin + '/index.html',
   clientId: '447115e9-7562-4755-bd5b-5badb1b2230e',
-  //responseType: 'code',
+  responseType: 'code',
   scope: 'openid profile https://azuregeek.onmicrosoft.com/demoapi/user_impersonation',
   strictDiscoveryDocumentValidation: false,
+  showDebugInformation: true,
+  oidc: false
 }

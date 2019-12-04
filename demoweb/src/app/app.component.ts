@@ -52,6 +52,11 @@ export class AppComponent {
     //this.configure();
     //this.oauthService.tryLoginImplicitFlow();
     this.configurePkce();
+    //this.oauthService.tryLoginCodeFlow();
+    
+    if(oauthService.hasValidAccessToken()){
+      this.refreshTimes.push(new Date(Date.now()).toLocaleString());
+    }
   }
 
   message: string;
@@ -68,6 +73,7 @@ export class AppComponent {
   public login() {
     //this.oauthService.initLoginFlow();
     this.oauthService.initCodeFlow();
+    this.refreshTimes.push(new Date(Date.now()).toLocaleString());
   }
 
   public logout() {
@@ -108,9 +114,16 @@ export class AppComponent {
   private configurePkce() {
     this.oauthService.configure(authConfigPkce);
     this.oauthService.setupAutomaticSilentRefresh();
-    this.oauthService.loadDiscoveryDocument("https://azuregeek.b2clogin.com/7b918f59-f55d-4d3e-8f45-58502a7684f7/b2c_1_susi/v2.0/.well-known/openid-configuration");
-    this.oauthService.tryLogin();
-    
+    this.oauthService.loadDiscoveryDocument("https://azuregeek.b2clogin.com/7b918f59-f55d-4d3e-8f45-58502a7684f7/b2c_1_susi/v2.0/.well-known/openid-configuration").then( resp => {
+      return this.oauthService.tryLoginCodeFlow();
+    }).then(_ => {
+      if (!this.oauthService.hasValidAccessToken()) {
+        this.oauthService.initCodeFlow();
+      }
+    })
+    .catch(err => {
+      console.log('error: ', err)
+    });;
   }
 
 }
