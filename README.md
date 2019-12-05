@@ -1,9 +1,12 @@
-"# azuregeek" 
+# Azure ADB2C PoC with Angular
 
+## Demo Appliations
 
-demoweb:    angular-oauth2-oidc
-demo2web:   angular-auth-oidc-client
+| Demo     | Used library             |
+| -------- |:------------------------:|
+| demoweb  | angular-oauth2-oidc      |
+| demo2web | angular-auth-oidc-client |
 
+## Demo API
 
-demoapi:    sart using dotnet run"# Angular_ADB2C_PoC" 
-"# Angular_ADB2C_PoC" 
+demoapi:    start using ```dotnet run```
