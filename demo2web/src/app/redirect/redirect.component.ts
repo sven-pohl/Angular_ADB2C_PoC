@@ -10,6 +10,10 @@ export class RedirectComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.oidcSecurityService.authorizedCallback();
+    /* Implict Flow */
+    this.oidcSecurityService.authorizedImplicitFlowCallback();
+    
+    /* Code Flow */
+    // this.oidcSecurityService.authorizedCallbackWithCode(window.location.toString());
   }
 }

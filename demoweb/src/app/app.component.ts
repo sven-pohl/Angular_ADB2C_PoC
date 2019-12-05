@@ -50,9 +50,7 @@ import { authConfig, DiscoveryDocumentConfig, authConfigPkce } from './auth.conf
 export class AppComponent {
   constructor(private http: HttpClient, private oauthService: OAuthService) {
     //this.configure();
-    //this.oauthService.tryLoginImplicitFlow();
     this.configurePkce();
-    //this.oauthService.tryLoginCodeFlow();
     
     if(oauthService.hasValidAccessToken()){
       this.refreshTimes.push(new Date(Date.now()).toLocaleString());
@@ -71,8 +69,7 @@ export class AppComponent {
   }
 
   public login() {
-    //this.oauthService.initLoginFlow();
-    this.oauthService.initCodeFlow();
+    this.oauthService.initLoginFlow();
     this.refreshTimes.push(new Date(Date.now()).toLocaleString());
   }
 
@@ -82,12 +79,12 @@ export class AppComponent {
 
   public refreshToken() {
     if (!this.oauthService.hasValidAccessToken()) {
-    this.oauthService.silentRefresh()
-      .then(info => { 
-        console.debug('refresh ok', info) 
-        this.refreshTimes.push(new Date(Date.now()).toLocaleString())})
-      .catch(err => console.error('refresh error', err));
-    }
+      this.oauthService.silentRefresh()
+        .then(info => { 
+          console.debug('refresh ok', info) 
+          this.refreshTimes.push(new Date(Date.now()).toLocaleString())})
+        .catch(err => console.error('refresh error', err));
+      }
     else {
       console.log("Token is still valid")
     };
@@ -107,23 +104,17 @@ export class AppComponent {
   private configure() {
     this.oauthService.configure(authConfig);
     this.oauthService.tokenValidationHandler = new NullValidationHandler();
-    this.oauthService.loadDiscoveryDocument(DiscoveryDocumentConfig.url);
+    this.oauthService.loadDiscoveryDocument(DiscoveryDocumentConfig.url)
     this.oauthService.setupAutomaticSilentRefresh();
+    this.oauthService.tryLoginImplicitFlow();
   }
 
   private configurePkce() {
     this.oauthService.configure(authConfigPkce);
+    this.oauthService.tokenValidationHandler = new JwksValidationHandler();
+    this.oauthService.loadDiscoveryDocument(DiscoveryDocumentConfig.url);
     this.oauthService.setupAutomaticSilentRefresh();
-    this.oauthService.loadDiscoveryDocument("https://azuregeek.b2clogin.com/7b918f59-f55d-4d3e-8f45-58502a7684f7/b2c_1_susi/v2.0/.well-known/openid-configuration").then( resp => {
-      return this.oauthService.tryLoginCodeFlow();
-    }).then(_ => {
-      if (!this.oauthService.hasValidAccessToken()) {
-        this.oauthService.initCodeFlow();
-      }
-    })
-    .catch(err => {
-      console.log('error: ', err)
-    });;
+    this.oauthService.tryLoginCodeFlow();
   }
 
 }
