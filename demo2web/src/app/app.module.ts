@@ -6,7 +6,6 @@ import { AuthModule, ConfigResult, OidcConfigService, OidcSecurityService, OpenI
 import { AppComponent } from './app.component';
 import { RedirectComponent } from './redirect/redirect.component';
 import { HomeComponent } from './home/home.component';
-import { BrowserDetailsComponent } from './browser-details/browser-details.component';
 
 export function loadConfig(oidcConfigService: OidcConfigService) {
     console.log('APP_INITIALIZER STARTING');
@@ -25,8 +24,7 @@ const appRoutes: Routes = [
     declarations: [
       AppComponent,
       RedirectComponent,
-      HomeComponent,
-      BrowserDetailsComponent
+      HomeComponent
     ],
     imports: [
         BrowserModule,
