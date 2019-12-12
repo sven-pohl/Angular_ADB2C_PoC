@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { OidcSecurityService } from 'angular-auth-oidc-client';
-import { Subscription } from 'rxjs';
+
 
 @Component({
   selector: 'app-home',
@@ -13,9 +13,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   isAuthorized: boolean;
   apiResult: string;
   userData: any;
+  
 
   constructor(private oidcSecurityService: OidcSecurityService, private http: HttpClient) {
-    this.isAuthorized = false;
+        this.isAuthorized = false;
     if (this.oidcSecurityService.moduleSetup) {
       this.doCallbackLogicIfRequired();
     } else {

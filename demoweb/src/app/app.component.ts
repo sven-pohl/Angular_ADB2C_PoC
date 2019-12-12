@@ -49,8 +49,8 @@ import { authConfig, DiscoveryDocumentConfig, authConfigPkce } from './auth.conf
 })
 export class AppComponent {
   constructor(private http: HttpClient, private oauthService: OAuthService) {
-    //this.configure();
-    this.configurePkce();
+    this.configure();
+    //this.configurePkce();
     
     if(oauthService.hasValidAccessToken()){
       this.refreshTimes.push(new Date(Date.now()).toLocaleString());

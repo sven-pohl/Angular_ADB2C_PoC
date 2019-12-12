@@ -21,7 +21,8 @@
             "aot": false,
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/silent-renew.html"
             ],
             "styles": [
               "src/styles.css"
@@ -78,6 +79,12 @@
           }
         }
       }
-    }},
-  "defaultProject": "demo2web"
+    }
+  },
+  "defaultProject": "demo2web",
+  "schematics": {
+    "@schematics/angular:component": {
+      "styleext": "scss"
+    }
+  }
 }

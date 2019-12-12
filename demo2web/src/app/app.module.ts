@@ -6,6 +6,7 @@ import { AuthModule, ConfigResult, OidcConfigService, OidcSecurityService, OpenI
 import { AppComponent } from './app.component';
 import { RedirectComponent } from './redirect/redirect.component';
 import { HomeComponent } from './home/home.component';
+import { BrowserDetailsComponent } from './browser-details/browser-details.component';
 
 export function loadConfig(oidcConfigService: OidcConfigService) {
     console.log('APP_INITIALIZER STARTING');
@@ -24,7 +25,8 @@ const appRoutes: Routes = [
     declarations: [
       AppComponent,
       RedirectComponent,
-      HomeComponent
+      HomeComponent,
+      BrowserDetailsComponent
     ],
     imports: [
         BrowserModule,
@@ -49,6 +51,7 @@ export class AppModule {
             const config: OpenIdConfiguration = {
                 stsServer: configResult.customConfig.stsServer,
                 redirect_url: 'http://localhost:4200/',
+                //redirect_url: 'http://localhost:4200/redirect.html',
                 client_id: '447115e9-7562-4755-bd5b-5badb1b2230e',
                 scope: 'openid profile https://azuregeek.onmicrosoft.com/demoapi/user_impersonation',
                 //response_type: 'id_token token',
@@ -62,6 +65,9 @@ export class AppModule {
                 // HTTP 401
                 unauthorized_route: '/unauthorized',
                 max_id_token_iat_offset_allowed_in_seconds: 10,
+
+                silent_renew: true,
+                silent_renew_url: 'https://localhost:4200/silent-renew.html',
             };
 
             this.oidcSecurityService.setupModule(config, configResult.authWellknownEndpoints);
