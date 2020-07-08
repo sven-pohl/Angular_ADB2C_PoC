@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { OAuthService, NullValidationHandler, JwksValidationHandler } from 'angular-oauth2-oidc';
+import { JwksValidationHandler } from 'angular-oauth2-oidc-jwks';
+import { OAuthService, NullValidationHandler } from 'angular-oauth2-oidc';
 import { authConfig, DiscoveryDocumentConfig, authConfigPkce } from './auth.config';
 
 @Component({
